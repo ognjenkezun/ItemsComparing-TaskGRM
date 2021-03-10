@@ -1,0 +1,101 @@
+﻿@model  IEnumerable<GRM_Task.Models.Item>
+@{
+    ViewData["Title"] = "Items Comparing";
+}
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-12">
+            <h2>@ViewData["Title"]</h2>
+            <p>Number Of Combinations @ViewData["CombinationCount"]</p>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-12">
+            <div class="table-responsive">
+                <table class="table">
+                    <thead class="bg-light">
+                        <tr>
+                            <th>
+                                @Html.DisplayNameFor(model => model.Position)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.Name)
+                            </th>
+                            <th class="text-right">
+                                @Html.DisplayNameFor(model => model.Score)
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model)
+                        {
+                            <tr>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Position)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Name)
+                                </td>
+                                <td class="text-right">
+                                    @Html.DisplayFor(modelItem => item.Score)
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    <hr />
+    <div class="row">
+        <div class="col-12">
+            <button class="btn btn-primary" type="button" id="btnStartCompare">Start Comparing</button>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-12">
+            <div id="itemComparePartial"></div>
+        </div>
+    </div>
+</div>
+
+<script>
+    document.getElementById("btnStartCompare").onclick = function () { myFunction() };
+    function myFunction() {
+        $("#itemComparePartial").load('@Url.Action("ItemsComparePartialView", "Home")');
+    }
+
+    function getAllCombinations() {
+        
+        var xhttp = new XMLHttpRequest();
+
+        xhttp.responseType = "json";
+        xhttp.onreadystatechange = function () {
+            if (this.readyState == 4 && this.status == 200) {
+                //document.getElementById("demo").innerHTML = this.response;
+                console.log("RESPONSE => ", this.response);
+            }
+        };
+        xhttp.open("GET", "HelloWorld/GetAllCombinations", true);
+        xhttp.setRequestHeader("Content-type", "application/json; charset=utf-8");
+        xhttp.send();
+    }
+
+    function compareItems() {
+        var comparedItems = { "Position1": 1, "Name1": "Item1", "Score1": 1, "Value1": 1, 
+                              "Position2": 2, "Name2": "Item2", "Score2": 0, "Value2": 2 
+        }
+
+        var xhttp = new XMLHttpRequest();
+        xhttp.responseType = "json";
+        xhttp.onreadystatechange = function () {
+            if (this.readyState == 4 && this.status == 200) {
+                //document.getElementById("demo").innerHTML = this.response;
+                console.log("RESPONSE => ", this.response);
+            }
+        };
+        xhttp.open("PUT", "Home/CompareItems", true);
+        xhttp.send(comparedItems);
+    }
+</script>
