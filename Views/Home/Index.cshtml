@@ -53,11 +53,14 @@
             <button class="btn btn-primary" type="button" id="btnStartCompare">Start Comparing</button>
         </div>
     </div>
-    <div class="row">
-        <div class="col-12">
-            <div id="itemComparePartial"></div>
+    @if ((int)ViewData["CombinationCount"] != 0)
+    {
+        <div class="row">
+            <div class="col-12">
+                <div id="itemComparePartial"></div>
+            </div>
         </div>
-    </div>
+    }
 </div>
 
 <script>

@@ -14,58 +14,23 @@ namespace GRM_Task.Controllers
         public HomeController(ItemRepository itemRepository)
         {
             _itemRepository = itemRepository;
-            var combinations = _itemRepository.GetAllCombinations();
-            ViewData["CombinationCount"] = combinations.Count();
         }
 
         [HttpGet]
         public IActionResult Index()
         {
             var items = _itemRepository.GetAllItems();
+            ViewData["CombinationCount"] = _itemRepository.GetAllCombinations().Count();
             return View(items);
-        }
-
-        [HttpGet]
-        public ActionResult<List<ItemsCombination>> GetAllCombinations()
-        {
-            var combinations = _itemRepository.GetAllCombinations();
-            ViewData["CombinationCount"] = combinations.Count();
-            return combinations;
         }
 
         [HttpPost]
         public IActionResult Index([FromForm] CompareModel comparedItems)
         {
             var nextCombination = _itemRepository.CompareItems(comparedItems);
-
-            if (nextCombination != null)
-            {
-                return PartialView("_ItemComparePartial", nextCombination);
-            }
-
+            ViewData["CombinationCount"] = _itemRepository.GetAllCombinations().Count();
             var items = _itemRepository.GetAllItems();
             return View(items);
-        }
-
-        [HttpPut]
-        public ActionResult<List<Item>> Edit([FromBody] CompareModel comparedItems)
-        {
-            var nextCombination = _itemRepository.CompareItems(comparedItems);
-
-            return _itemRepository.GetAllItems();
-        }
-
-        [HttpGet]
-        public ActionResult<CompareModel> GetNextCombination()
-        {
-            var nextCombination = _itemRepository.GetNextCombination();
-
-            if (nextCombination != null)
-            {
-                return _itemRepository.GetNextCombination();
-            }
-
-            return NoContent();
         }
 
         [HttpGet]

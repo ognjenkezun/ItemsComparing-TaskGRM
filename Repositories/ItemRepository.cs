@@ -61,73 +61,60 @@ namespace GRM_Task.Repositories
             if (comparedItems != null)
             {
                 if (comparedItems.Value1.GetType() == typeof(int) &&
-                comparedItems.Value2.GetType() == typeof(int))
+                    comparedItems.Value2.GetType() == typeof(int))
                 {
-                    if (combinations.Count() == 0)
+                    int indexOfCombination = 0;
+                    bool founded = false;
+                    for (int i = 0; i < combinations.Count(); i++)
                     {
-                        return GetNextCombination();
-                    }
-                    else
-                    {
-                        int indexOfCombination = 0;
-                        bool founded = false;
-                        for (int i = 0; i < combinations.Count(); i++)
+                        if (String.Equals(combinations[i].Name1, comparedItems.Name1) &&
+                            String.Equals(combinations[i].Name2, comparedItems.Name2))
                         {
-                            if (String.Equals(combinations[i].Name1, comparedItems.Name1) &&
-                                String.Equals(combinations[i].Name2, comparedItems.Name2))
+                            indexOfCombination = i;
+                            founded = true;
+                            Item item = new Item();
+
+                            if (comparedItems.Value1 > comparedItems.Value2)
                             {
-                                indexOfCombination = i;
-                                founded = true;
-                                Item item = new Item();
-
-                                if (comparedItems.Value1 > comparedItems.Value2)
-                                {
-                                    //item.Score = comparedItems.Score1;
-                                    item.Name = comparedItems.Name1;
-                                    //item.Position = comparedItems.Position1;
-                                    var indexOfItem = items.FindIndex(x => x.Name == item.Name);
-                                    //item.Score++;
-                                    items[indexOfItem].Score++;
-                                }
-                                else if (comparedItems.Value1 < comparedItems.Value2)
-                                {
-                                    //item.Score = comparedItems.Score2;
-                                    item.Name = comparedItems.Name2;
-                                    //item.Position = comparedItems.Position2;
-                                    var indexOfItem = items.FindIndex(x => x.Name == item.Name);
-                                    //item.Score++;
-                                    items[indexOfItem].Score++;
-
-                                }
-                                else
-                                {
-                                    return GetNextCombination();
-                                }
-
-                                items = items.OrderByDescending(x => x.Score).ToList();
-
-                                int position = 0;
-
-                                foreach (var itm in items)
-                                {
-                                    itm.Position = ++position;
-                                }
-
-                                break;
+                                //item.Score = comparedItems.Score1;
+                                item.Name = comparedItems.Name1;
+                                //item.Position = comparedItems.Position1;
+                                var indexOfItem = items.FindIndex(x => x.Name == item.Name);
+                                //item.Score++;
+                                items[indexOfItem].Score++;
                             }
+                            else if (comparedItems.Value1 < comparedItems.Value2)
+                            {
+                                //item.Score = comparedItems.Score2;
+                                item.Name = comparedItems.Name2;
+                                //item.Position = comparedItems.Position2;
+                                var indexOfItem = items.FindIndex(x => x.Name == item.Name);
+                                //item.Score++;
+                                items[indexOfItem].Score++;
+
+                            }
+
+                            items = items.OrderByDescending(x => x.Score).ToList();
+
+                            int position = 0;
+
+                            foreach (var itm in items)
+                            {
+                                itm.Position = ++position;
+                            }
+
+                            break;
                         }
-                        if (founded)
-                        {
-                            combinations.RemoveAt(indexOfCombination);
-                        }
+                    }
+                    if (founded)
+                    {
+                        combinations.RemoveAt(indexOfCombination);
                     }
                 }
                 return GetNextCombination();
             }
-            else
-            {
-                return GetNextCombination();
-            }
+
+            return null;
         }
 
         public CompareModel GetNextCombination()
