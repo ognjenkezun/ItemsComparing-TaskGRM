@@ -22,30 +22,15 @@ namespace GRM_Task.Controllers
         public IActionResult Index()
         {
             var items = _itemRepository.GetAllItems();
-            //ViewData["ItemsList"] = items;
-            ViewData["CombinationCount"] = _itemRepository.GetAllCombinations().Count();
-
             return View(items);
         }
 
         [HttpGet]
-        public IActionResult GetAllItems()
-        {
-            var items = _itemRepository.GetAllItems();
-            var numberOfCombinations = _itemRepository.GetAllCombinations().Count();
-
-            return View();
-        }
-
-        [HttpGet]
-        //public IActionResult GetAllCombination()
         public ActionResult<List<ItemsCombination>> GetAllCombinations()
         {
             var combinations = _itemRepository.GetAllCombinations();
             ViewData["CombinationCount"] = combinations.Count();
-            var allCombination = _itemRepository.GetAllCombinations();
-            return allCombination;
-            //return View(allCombination);
+            return combinations;
         }
 
         [HttpPost]
@@ -55,7 +40,7 @@ namespace GRM_Task.Controllers
 
             if (nextCombination != null)
             {
-                //return PartialView("_ItemComparePartial", nextCombination);
+                return PartialView("_ItemComparePartial", nextCombination);
             }
 
             var items = _itemRepository.GetAllItems();
@@ -66,8 +51,7 @@ namespace GRM_Task.Controllers
         public ActionResult<List<Item>> Edit([FromBody] CompareModel comparedItems)
         {
             var nextCombination = _itemRepository.CompareItems(comparedItems);
-            var combinations = _itemRepository.GetAllCombinations();
-            ViewData["CombinationCount"] = combinations.Count();
+
             return _itemRepository.GetAllItems();
         }
 
@@ -82,12 +66,6 @@ namespace GRM_Task.Controllers
             }
 
             return NoContent();
-        }
-
-        [HttpGet]
-        public IActionResult ComparedItems()
-        {
-            return PartialView("_ItemComparePartial", _itemRepository.GetNextCombination());
         }
 
         [HttpGet]

@@ -5,34 +5,6 @@
 <hr />
 <div class="row">
     <div class="col-12">
-        @*<form class="col-12" asp-action="CompareItems" asp-controller="Home" method="post">
-            <div class="container-fluid">
-                <div class="row">
-                    <div class="form-group col-4 mb-0 p-1 text-left">
-                        <label class="col-form-label">Item Name</label>
-                        <label class="col-form-label d-block">@Model.Name1</label>
-                        </div>
-                    <div class="form-group col-2 mb-0 p-1 text-center">
-                        <label class="col-form-label text-center">Value</label>
-                        <input id="scoreItem1" class="d-block w-100 text-center" value="@Model.Value1" min="0" type="number" pattern="\d+" />
-                    </div>
-                    <div class="form-group col-2 mb-0 p-1 text-center">
-                        <label class="col-form-label">Value</label>
-                        <input id="scoreItem1" class="d-block w-100 text-center" value="@Model.Value2" min="0" type="number" pattern="\d+" />
-                    </div>
-                    <div class="form-group col-4 mb-0 p-1 text-right">
-                        <label class="col-form-label">Item Name</label>
-                        <label class="col-form-label d-block">@Model.Name2</label>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-12 text-center">*@
-                        @*<button class="btn btn-primary" type="button" onclick="compareItems()">Compare</button>*@
-                        @*<button class="btn btn-primary" type="submit">Compare</button>
-                    </div>
-                </div>
-            </div>
-        </form>*@
         <form asp-controller="Home" asp-action="Index" method="post">
             <div class="container-fluid">
                 <div class="row">
@@ -90,75 +62,6 @@
     </div>
 </div>
 
-@*<div class="container-fluid">
-    <div class="row">
-        <form class="col-12" asp-action="Index" asp-controller="Home" method="post">
-            <div class="container-fluid">
-                <div class="row">
-                    <div class="form-group col-4 mb-0 p-1 text-left">
-                        <label class="col-form-label">Item Name</label>
-                        <label class="col-form-label d-block">l</label>
-                        @*<label class="col-form-label d-block">@Model.Name1</label>*@
-@*</div>
-<div class="form-group col-2 mb-0 p-1 text-center">
-    <label class="col-form-label text-center">Value</label>
-    <input id="scoreItem1" class="d-block w-100 text-center" value="0" min="0" type="number" pattern="\d+" />*@
-@*<input id="scoreItem1" class="d-block w-100 text-center" value="@Model.Score1" min="0" type="number" pattern="\d+" />*@
-@*</div>
-                    <div class="form-group col-2 mb-0 p-1 text-center">
-                        <label class="col-form-label">Value</label>
-                        <input id="scoreItem2" class="d-block w-100 text-center" value="0" min="0" type="number" pattern="\d+" />
-                    </div>
-                    <div class="form-group col-4 mb-0 p-1 text-right">
-                        <label class="col-form-label">Item Name</label>
-                        <label class="col-form-label d-block">k</label>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-12 text-center">
-                        <button class="btn btn-primary" type="button" onclick="compareItems()">Compare</button>
-                    </div>
-                </div>
-            </div>
-        </form>
-    </div>
-</div>*@
-
-
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
 }
-
-<script>
-    function compareItems() {
-        var comparedItems = new Object.JSON({
-            Position1: 1, Name1: "Item1", Score1: 1, Value1: 1,
-            Position2: 2, Name2: "Item2", Score2: 0, Value2: 2
-        });
-
-        var xhttp = new XMLHttpRequest();
-        xhttp.responseType = "json";
-        xhttp.onreadystatechange = function () {
-            if (this.readyState == 4 && this.status == 200) {
-                //document.getElementById("demo").innerHTML = this.response;
-                console.log("RESPONSE => ", this.response);
-            }
-        };
-        xhttp.open("POST", "/CompareItems", true);
-        xhttp.send(JSON.stringify(comparedItems));
-    }
-
-    function compareItems(comparedItems) {
-
-        var xhttp = new XMLHttpRequest();
-        xhttp.responseType = "json";
-        xhttp.onreadystatechange = function () {
-            if (this.readyState == 4 && this.status == 200) {
-                //document.getElementById("demo").innerHTML = this.response;
-                console.log("RESPONSE => ", this.response);
-            }
-        };
-        xhttp.open("POST", "Home/CompareItems", true);
-        xhttp.send(JSON.stringify(comparedItems));
-    }
-</script>
